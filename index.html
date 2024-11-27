@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/style.css">
+    <title>FUT</title>
+   <link rel="stylesheet" href="src/player.css">
+   
+   
+  
+</head>
+<body class>
+    <div class=" bg-[url('/assets/images/stadium_background.webp')] bg-cover bg-center min-h-screen z-10 ">
+
+        <div class=" relative inset-0 bg-black opacity-40"></div>
+
+        <div class="relative z-10">
+
+            <header class="bg-black text-white">
+                <div class="container mx-auto flex items-center justify-between py-4 px-6">
+                  <div class="text-2xl font-bold text-yellow-400">FUT Champions</div>
+                  <nav class="hidden lg:flex space-x-6">
+                    <a href="#" class="hover:text-yellow-400">Joueurs</a>
+                    <a href="#" class="hover:text-yellow-400">Marché</a>
+                    <a href="#" class="hover:text-yellow-400">Équipes</a>
+                    <a href="#" class="hover:text-yellow-400">Solutions SBC</a>
+                    <a href="#" class="hover:text-yellow-400">Actus</a>
+                  </nav>
+                  <div class="hidden lg:flex items-center space-x-4">
+                    <input type="text" placeholder="Rechercher..." 
+                           class="px-3 py-2 w-60 rounded-md bg-slate-600 text-sm text-white focus:outline-none">
+                    
+                  
+                  </div>
+                <button onclick="addPlayer()" class=" text-white" >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </button>
+                  <button class="lg:hidden text-white" id="menu-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                  </button>
+               
+                </div>
+                <div id="mobile-menu" 
+                   class="lg:hidden hidden fixed inset-0 bg-black flex flex-col items-start justify-center space-y-6">
+                <a href="#" class="hover:text-yellow-400 text-xl">Joueurs</a>
+                <a href="#" class="hover:text-yellow-400 text-xl">Marché</a>
+                <a href="#" class="hover:text-yellow-400 text-xl">Équipes</a>
+                <a href="#" class="hover:text-yellow-400 text-xl">Solutions SBC</a>
+                <a href="#" class="hover:text-yellow-400 text-xl">Actus</a>
+              </div>
+              </header>
+
+              <div class="flex justify-center items-center h-screen space-x-44">
+                <div class="bg-[url('/assets/images/field-bg.webp')] tilt  w-[750px] h-[500px] bg-cover bg-center ">
+
+                    <div class="formation-container" >
+
+                        <div class="player-card col-start-2 row-start-1">ST<button onclick="addPlayerCars()" class=" add-player-card-btn text-white "  >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                              </svg>
+                            </button>
+                        </div>
+                        <div class="player-card col-start-1 row-start-2">LM</div>
+                        <div class="player-card col-start-2 row-start-2">CM</div>
+                        <div class="player-card col-start-3 row-start-2">CM</div>
+                        <div class="player-card col-start-3 row-start-1">ST</div>
+                        <div class="player-card col-start-4 row-start-2">RM</div>
+                        <div class="player-card col-start-1 row-start-3">LB</div>
+                        <div class="player-card col-start-2 row-start-3">CB</div>
+                        <div class="player-card col-start-3 row-start-3">CB</div>
+                        <div class="player-card col-start-4 row-start-3">RB</div>
+                        
+                    </div>
+                    <div class="player-card col-span-4 justify-self-center row-start-4">GK</div>
+
+
+
+                </div>
+
+                <div class="rounded w-[200px] h-[200px] bg-black text-white p-2 flex flex-col gap-2 items-center mr-12">
+                    <h2 class="text-2xl">SQUAD INFO</h2>
+                    <p>FORMATION</p>
+                    <select class="bg-black-slate w-1/2 text-black" name="formation" id="formationSelect">
+                        <option value="4-4-2">4-4-2</option>
+                        <option value="4-3-3">4-3-3</option>
+                    </select>
+                    <p>TOTAL CHEMISTRY</p>
+                    <p class="text-yellow-500">100%</p>
+                </div>
+              </div>
+
+        </div>
+
+        <section class=" fixed inset-0 flex justify-center items-center modalContainer bg-black/60 z-50 hidden  ">
+            <div id="addForm" class=" w-2/3 lg:w-1/2 bg-black rounded-lg p-4 text-white ">
+                <div class="flex justify-between">
+                    <h2 class="text-center text-2xl font-bold mb-4">ADD A PLAYER</h2>
+                    <button id="closeAdd" onclick="addPlayer()" class="iconBtn">close</button>
+                </div>
+                <form class="flex flex-col gap-4 text-black">
+                    <!-- Info Column -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex flex-col">
+                            <label for="name" class="mb-1 text-sm font-semibold text-white">Player Name</label>
+                            <input type="text" id="nameInput" placeholder="Enter player name" class="input ">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="nationality" class="mb-1 text-sm font-semibold text-white">Nationality</label>
+                            <input type="text" id="natioInput" placeholder="Enter nationality" class="input">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="club" class="mb-1 text-sm font-semibold text-white">Club Name</label>
+                            <input type="text" id="clubInput" placeholder="Enter club name" class="input ">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="position" class="mb-1 text-sm font-semibold text-white">Position</label>
+                            <select class="input h-10" name="position" id="positionInput">
+                                <option value="ST">ST</option>
+                                <option value="LM">LM</option>
+                                <option value="CM">CM</option>
+                                <option value="RM">RM</option>
+                                <option value="LB">LB</option>
+                                <option value="CB">CB</option>
+                                <option value="RB">RB</option>
+                                <option value="GK">GK</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Images Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex flex-col">
+                            <label for="player-photo" class="mb-1 text-sm font-semibold text-white">Player Photo</label>
+                            <input type="file" id="photoInput" class="input">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="club-photo" class="mb-1 text-sm font-semibold text-white">Club Logo</label>
+                            <input type="file" id="clubImageInput" class="input">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="flag-photo" class="mb-1 text-sm font-semibold text-white">National Flag</label>
+                            <input type="file" id="flagImageInput" class="input w-full">
+                        </div>
+                    </div>
+
+                    <!-- Stats Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex flex-col">
+                            <label for="pace" class="mb-1 text-sm font-semibold text-white">Pace</label>
+                            <input type="number" id="paceInput" placeholder="Pace (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="shooting" class="mb-1 text-sm font-semibold text-white">Shooting</label>
+                            <input type="number" id="shootingInput" placeholder="Shooting (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="passing" class="mb-1 text-sm font-semibold text-white">Passing</label>
+                            <input type="number" id="passingInput" placeholder="Passing (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="Dribbling" class="mb-1 text-sm font-semibold text-white">Dribbling</label>
+                            <input type="number" id="dribblingInput" placeholder="Dribbling (0-100)" class="input"
+                                min="0" max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="Defending" class="mb-1 text-sm font-semibold text-white">Defending</label>
+                            <input type="number" id="defendingInput" placeholder="Defending (0-100)" class="input"
+                                min="0" max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="Physical" class="mb-1 text-sm font-semibold text-white">Physical</label>
+                            <input type="number" id="physicalInput" placeholder="Physical (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="rating" class="mb-1 text-sm font-semibold text-white">Rating</label>
+                            <input type="number" id="ratingInput" placeholder="Rating (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-center mt-4">
+                        <button id="addBtn" class="submitBtn text-white">
+                            Submit Player
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+
+        
+    </div>
+     <!-- ADD FORM -->
+     
+
+
+    
+</body>
+<script>
+   const addForm = document.getElementById('addForm');
+const modalContainer = document.querySelector('.modalContainer');
+const closeAdd = document.getElementById('closeAdd');
+
+
+function addPlayer() {
+    
+    modalContainer.classList.toggle('hidden');
+    
+    
+    
+}
+
+</script>
+
+<script src="formation.js"></script>
+</html>
