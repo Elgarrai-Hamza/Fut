@@ -644,6 +644,18 @@ video {
   grid-row-start: 4;
 }
 
+.m-10 {
+  margin: 2.5rem;
+}
+
+.m-80 {
+  margin: 20rem;
+}
+
+.m-8 {
+  margin: 2rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -695,6 +707,10 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-96 {
+  height: 24rem;
 }
 
 .min-h-screen {
