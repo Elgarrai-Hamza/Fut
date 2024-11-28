@@ -141,20 +141,39 @@ function addPlayerCard(){
   playerDetaillsOnCard.innerHTML = "";
   playersData.players.forEach((player,index) => {
 
-    const playerCard = document.getElementById("playerDetaillsOnCard");
+    const playerCard = document.createElement("div");
+
+    playerDetaillsOnCard.classList.add(
+      "grid", // Grid layout
+      "grid-cols-2", // Two cards per row
+      "gap-4", // Spacing between cards
+      "p-4" // Padding around the grid
+    );
     
     playerCard.classList.add(
     
       "relative",
-     
-       "w-72", "h-auto"
+      "bg-[url('/assets/images/badge_gold.webp')]", // Background image
+      "bg-cover", // Ensure background image covers the card
+      "bg-center", // Center the background image
+      "rounded-lg", // Rounded corners
+      "w-48", // Fixed width
+      "h-auto", // Dynamic height
+      "shadow-md", // Subtle shadow
+      "text-white", // White text
+      "p-4" // Padding inside the card
+        
+
       
       
     );
+  
     playerCard.innerHTML = `
 
     
-      <div class="absolute top-4 left-6 text-xl font-bold">${player.rating}
+
+    
+      <div class="absolute top-6 left-6 text-xl font-bold">${player.rating}
       <p class="text-sm text-center ">${player.position}</p>
       </div>
       
@@ -189,7 +208,7 @@ function addPlayerCard(){
     </div>
 
 
-    <div class="absolute top-4 right-6">
+    <div class="absolute top-6 right-6">
 
     <img class="w-6 h-6  rounded-full mx-auto mt-1" src="${player.flag}" alt="${player.nationality}">
       

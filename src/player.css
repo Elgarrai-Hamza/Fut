@@ -74,6 +74,7 @@
 
 .add-player-card-btn svg {
   stroke: #fff;
+  
 }
 
 
@@ -84,6 +85,7 @@
   gap: 10px;  /* Adjust spacing between the cards */
   justify-items: center;  /* Align cards in the center */
   max-width: 700px;
+  
 }
 
 @media (max-width: 768px) {
