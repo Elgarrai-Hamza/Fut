@@ -133,13 +133,28 @@ function SeeAllplayer() {
   });
 }
 
-function addPlayerCard(){
+function addPlayerCard(filterPosition = null){
+
+  document.getElementById("GKbtn").addEventListener("click", () => addPlayerCard("GK"));
+  document.getElementById("STbtn").addEventListener("click", () => addPlayerCard("ST"));
+  document.getElementById("CMbtn").addEventListener("click", () => addPlayerCard("CM"));
+  document.getElementById("LBbtn").addEventListener("click", () => addPlayerCard("LB"));
+  document.getElementById("RBbtn").addEventListener("click", () => addPlayerCard("RB"));
+  document.getElementById("CBbtn").addEventListener("click", () => addPlayerCard("CB"));
+  document.getElementById("RMbtn").addEventListener("click", () => addPlayerCard("RM"));
+
 
   playerlistContainer.classList.toggle('hidden')
 
   const playersData = JSON.parse(localStorage.getItem("players")) || { players: [] };
+  // Filter players if a position is provided
+  const playersToDisplay = filterPosition
+    ? playersData.players.filter(player => player.position === filterPosition)
+    : playersData.players;
+
+    //
   playerDetaillsOnCard.innerHTML = "";
-  playersData.players.forEach((player,index) => {
+  playersToDisplay.forEach((player,index) => {
 
     const playerCard = document.createElement("div");
 
@@ -234,9 +249,7 @@ function addPlayerCard(){
       
       
 
-         
-   
-
+      
 
     playerDetaillsOnCard.appendChild(playerCard)
 
