@@ -2,7 +2,7 @@
   transform: perspective(800px) rotateX(10deg);
   transition: transform 0.3s ease-in-out;
 }
-.player-card {
+.empty-player-card{
   margin: auto;
   height: 8rem;
   width: 8rem;
@@ -18,7 +18,7 @@
 
 }
 
-.player-card::before {
+.empty-player-card::before {
   content: "";
   position: absolute;
   inset: 0; /* Ensures it spans the entire card */
@@ -30,7 +30,7 @@
   transform: scale(1.2); /* Slightly larger to create the "glow" effect */
 }
 
-.player-card:hover::before {
+.empty-player-card:hover::before {
   opacity: 1; /* Makes the border visible on hover */
   transform: scale(1); /* Matches the card size exactly */
   box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); /* Adds a subtle glowing effect */
@@ -41,7 +41,7 @@
 
 .formation-container {
   display: grid;
-  height: 80%;
+  height: 100%;
   width: 100%;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -85,6 +85,7 @@
   gap: 10px;  /* Adjust spacing between the cards */
   justify-items: center;  /* Align cards in the center */
   max-width: 700px;
+  
   
 }
 

@@ -130,9 +130,20 @@ function SeeAllplayer() {
          
     `;
     formPlayersDisplay.appendChild(playerCard);
+    
   });
 }
 
+   const addForm = document.getElementById('addForm');
+   const modalContainer = document.querySelector('.modalContainer');
+   const closeAdd = document.getElementById('closeAdd');
+function addPlayer() {
+    
+  modalContainer.classList.toggle('hidden');
+    
+    
+    
+}
 function addPlayerCard(filterPosition = null){
 
   document.getElementById("GKbtn").addEventListener("click", () => addPlayerCard("GK"));
@@ -145,6 +156,7 @@ function addPlayerCard(filterPosition = null){
 
 
   playerlistContainer.classList.toggle('hidden')
+  
 
   const playersData = JSON.parse(localStorage.getItem("players")) || { players: [] };
   // Filter players if a position is provided
@@ -176,7 +188,8 @@ function addPlayerCard(filterPosition = null){
       "h-auto", // Dynamic height
       "shadow-md", // Subtle shadow
       "text-white", // White text
-      "p-4" // Padding inside the card
+      "p-4", // Padding inside the card
+      "cursor-pointer", 
         
 
       
@@ -240,16 +253,28 @@ function addPlayerCard(filterPosition = null){
       </div>
     `;
 
-     
-
 
     
-      
-     
-      
-      
 
-      
+    playerCard.addEventListener("click", () => {
+      const targetDivId = `${player.position}div`; // Match the div ID with the player's position
+      const targetContainer = document.getElementById(targetDivId);
+
+      if (targetContainer) {
+        // Replace the div content with the player card
+        
+        targetContainer.innerHTML = ""; // Clear existing content
+        targetContainer.appendChild(playerCard); // Append the new card
+
+        // Hide the player list
+        playerlistContainer.classList.add("hidden");
+        
+      }
+    });
+
+     
+
+    
 
     playerDetaillsOnCard.appendChild(playerCard)
 
@@ -259,6 +284,8 @@ function addPlayerCard(filterPosition = null){
   });
   
 }
+
+
 
 
 openform.addEventListener("click", () => {
