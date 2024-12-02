@@ -242,6 +242,13 @@ const playerform = document.getElementById("playerModal");
 const formPlayersDisplay = document.getElementById("modalPlayersDisplay");
 const playerDetaillsOnCard = document.getElementById("playerDetaillsOnCard");
 
+const playerlistContainer = document.querySelector('.playerlistContainer');
+const playerlist = document.getElementById('playerlist');
+
+const addForm = document.getElementById('addForm');
+const modalContainer = document.querySelector('.modalContainer');
+const closeAdd = document.getElementById('closeAdd');
+
 
 function SeeAllplayer() {
   const playersData = JSON.parse(localStorage.getItem("players")) || { players: [] };
@@ -272,9 +279,7 @@ function SeeAllplayer() {
   });
 }
 
-   const addForm = document.getElementById('addForm');
-   const modalContainer = document.querySelector('.modalContainer');
-   const closeAdd = document.getElementById('closeAdd');
+  
 
 
 function addPlayer() {
@@ -285,7 +290,7 @@ function addPlayer() {
 }
 
 
-
+let selectedPlayers = [];
 
 function addPlayerCard(filterPosition = null , index = null){
 
@@ -297,7 +302,7 @@ function addPlayerCard(filterPosition = null , index = null){
   const playersData = JSON.parse(localStorage.getItem("players")) || { players: [] };
   // Filter players if a position is provided
   const playersToDisplay = filterPosition
-    ? playersData.players.filter(player => player.position === filterPosition)
+    ? playersData.players.filter(player => player.position === filterPosition) 
     : playersData.players;
 
     
@@ -309,6 +314,8 @@ function addPlayerCard(filterPosition = null , index = null){
   playersToDisplay.forEach((player) => {
 
     const playerCard = document.createElement("div");
+    const optionbar = document.createElement("div");
+    
 
     playerDetaillsOnCard.classList.add(
       "grid", // Grid layout
@@ -326,7 +333,6 @@ function addPlayerCard(filterPosition = null , index = null){
       "rounded-lg", // Rounded corners
       "w-48", // Fixed width
       "h-auto", // Dynamic height
-       // Subtle shadow
       "text-white", // White text
       "p-4", // Padding inside the card
       "cursor-pointer", 
@@ -398,39 +404,86 @@ function addPlayerCard(filterPosition = null , index = null){
 
 
 
+
     playerCard.addEventListener("click", () => {
+
+      if (selectedPlayers.some((selected) => selected.name === player.name)) {
+        alert(`${player.name} is already on the field.`);
+        return;
+      }
+
+ 
+
       if (index !== null) {
         const targetDiv = document.querySelector(
           `.formation-wraper button[onclick*="${filterPosition}"][onclick*="${index}"]`
         );
 
-        console.log(targetDiv)
-
         if (targetDiv) {
-          targetDiv.innerHTML = "";
+
+          selectedPlayers.push(player);
+      
+          
+
+
+          targetDiv.innerHTML = `<button  class=" add-player-card-btn text-white "  >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                              </svg>
+                            </button>`;
+
+          
+          
+          optionbar.classList.add(
+            "absolute", "top-2", "-right-4", "bg-black", "text-white",
+            "p-2", "rounded", "cursor-pointer", "text-sm", "font-bold"
+          );
+          optionbar.textContent = "X";
+
+
+
+          targetDiv.appendChild(optionbar);
+
+
+
+
           playerCard.classList.add(
             "relative",
             "bg-[url('/assets/images/badge_gold.webp')]", // Background image
             "bg-cover", // Ensure background image covers the card
             "bg-center", // Center the background image
             "rounded-lg", // Rounded corners
-            "w-[120px]", // Smaller fixed width
-            "h-auto", // Dynamic height
+            "w-[150px]", // Smaller fixed width
+            "h-[175px]", // Dynamic height
               // Subtle shadow
             "text-white", // White text
             "p-2", // Smaller padding inside the card
-            "cursor-pointer"
+            "cursor-pointer",
+            
           );
           
           playerCard.innerHTML = `
-            <div class="absolute top-5 left-4 text-lg font-bold">${player.rating}
+            <div class =" mb-4">
+
+            <div class="absolute top-10  left-4 text-lg  font-bold ">${player.rating}
               <p class="text-xs text-center">${player.position}</p>
             </div>
+
+            <div class="absolute top-12 right-4">
+              <img class="w-4 h-4 rounded-full mx-auto mb-1  " src="${player.flag}" alt="${player.nationality}">
+              <img class="w-4 h-4 rounded-full mx-auto " src="${player.logo}" alt="${player.club}">
+            </div>
+
+            <div class="mb-0">
+
+              <img class="w-18 h-18 " src="${player.photo}" alt="${player.name}">
+              <h6 class="text-xs font-bold text-center ">${player.name}</h6>
             
-            <img class="w-12 h-12 mx-auto" src="${player.photo}" alt="${player.name}">
-            <h6 class="text-xs font-bold text-center mb-4">${player.name}</h6>
+            </div>
+            
+            
           
-            <div class="flex justify-around text-center mt-0.5 gap-0.5 text-[8px] -ml-1 ">
+            <div class="flex justify-around text-center gap-0.5 text-[8px] -ml-1 ">
               <div class="flex flex-col items-center">
                 <span>PAC</span>
                 <span>${player.pace}</span>
@@ -456,20 +509,61 @@ function addPlayerCard(filterPosition = null , index = null){
                 <span>${player.physical}</span>
               </div>
             </div>
-          
-            <div class="absolute top-6 right-4">
-              <img class="w-4 h-4 rounded-full mx-auto mt-0.5" src="${player.flag}" alt="${player.nationality}">
-              <img class="w-4 h-4 rounded-full mx-auto mt-0.5" src="${player.logo}" alt="${player.club}">
+            
             </div>
+            
+          
+            
           `;
+
+        
+
+
            // Clear the target div
           targetDiv.appendChild(playerCard); // Append the new player card
+          
+
+
+         
           playerlistContainer.classList.add("hidden"); // Hide the player list
         } else {
           console.error("Target div not found for index:", index);
         }
+
+
+        
+
+        
+
+
+
+
+        optionbar.addEventListener("click", (e)=> {
+
+          selectedPlayers = selectedPlayers.filter((selected) => selected.name !== player.name);
+          e.stopPropagation();
+          playerCard.remove();
+          optionbar.remove();
+          
+
+        })
+
+        
       }
+
+      
+
+      
+      
+    
+
+      
     });
+
+
+    
+
+    
 
 
 
@@ -497,6 +591,257 @@ function addPlayerCard(filterPosition = null , index = null){
 }
 
 
+function addSubPlayerCard(index = null){
+
+  playerlistContainer.classList.toggle('hidden')
+
+  const playersData = JSON.parse(localStorage.getItem("players")) || { players: [] };
+
+  playerDetaillsOnCard.innerHTML = "";
+
+  playersData.players.forEach((player) => {
+
+    const playerCard = document.createElement("div");
+    const optionbar = document.createElement("div");
+
+    playerCard.classList.add(
+    
+      "relative",
+      "bg-[url('/assets/images/badge_gold.webp')]", // Background image
+      "bg-cover", // Ensure background image covers the card
+      "bg-center", // Center the background image
+      "rounded-lg", // Rounded corners
+      "w-48", // Fixed width
+      "h-auto", // Dynamic height
+      "text-white", // White text
+      "p-4", // Padding inside the card
+      "cursor-pointer", 
+        
+
+      
+      
+    );
+  
+    playerCard.innerHTML = `
+
+    
+
+    
+      <div class="absolute top-6 left-6 text-xl font-bold">${player.rating}
+      <p class="text-sm text-center ">${player.position}</p>
+      </div>
+      
+      <img class="w-18 h-18 mx-auto " src="${player.photo}" alt="${player.name}">
+      <h3 class="text-lg font-bold  text-center">${player.name}</h3>
+
+      <div class="flex justify-around text-center mt-[2px] gap-0 text-xs w-36 mx-auto">
+      <div class="flex flex-col items-center">
+        <span>PAC</span>
+        <span>${player.pace}</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span >SHO</span>
+        <span>${player.shooting}</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span >PAS</span>
+        <span>${player.passing}</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span >DRI</span>
+        <span>${player.dribbling}</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span >DEF</span>
+        <span>${player.defending}</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span >PHY</span>
+        <span>${player.physical}</span>
+      </div>
+    </div>
+
+
+    <div class="absolute top-6 right-6">
+
+    <img class="w-6 h-6  rounded-full mx-auto mt-1" src="${player.flag}" alt="${player.nationality}">
+      
+      <img class="w-6 h-6 rounded-full mx-auto mt-1" src="${player.logo}" alt="${player.club}">
+      
+
+    </div>
+
+
+    
+      
+      
+      
+      </div>
+    `;
+    playerDetaillsOnCard.classList.add(
+      "grid", // Grid layout
+      "grid-cols-2", // Two cards per row
+      "gap-4", // Spacing between cards
+      "p-4" // Padding around the grid
+    );
+
+    playerDetaillsOnCard.appendChild(playerCard)
+
+
+
+
+
+    playerCard.addEventListener("click", () => {
+
+      if (index !== null) {
+        const targetDiv = document.querySelector(
+          `.SubstitutionContainer button[onclick*="${index}"]`
+        );
+  
+        if (targetDiv) {
+
+          targetDiv.innerHTML = `<button  class=" add-player-card-btn text-white "  >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                              </svg>
+                            </button>`;
+
+          
+          
+          optionbar.classList.add(
+            "absolute", "top-2", "-right-4", "bg-black", "text-white",
+            "p-2", "rounded", "cursor-pointer", "text-sm", "font-bold"
+          );
+          optionbar.textContent = "X";
+
+
+
+          targetDiv.appendChild(optionbar);
+
+
+
+
+          playerCard.classList.add(
+            "relative",
+            "bg-[url('/assets/images/badge_gold.webp')]", // Background image
+            "bg-cover", // Ensure background image covers the card
+            "bg-center", // Center the background image
+            "rounded-lg", // Rounded corners
+            "w-[150px]", // Smaller fixed width
+            "h-[175px]", // Dynamic height
+              // Subtle shadow
+            "text-white", // White text
+            "p-2", // Smaller padding inside the card
+            "cursor-pointer"
+          );
+          
+          playerCard.innerHTML = `
+            <div class =" mb-4">
+
+            <div class="absolute top-10  left-4 text-lg  font-bold ">${player.rating}
+              <p class="text-xs text-center">${player.position}</p>
+            </div>
+
+            <div class="absolute top-12 right-4">
+              <img class="w-4 h-4 rounded-full mx-auto mb-1  " src="${player.flag}" alt="${player.nationality}">
+              <img class="w-4 h-4 rounded-full mx-auto " src="${player.logo}" alt="${player.club}">
+            </div>
+
+            <div class="mb-0">
+
+              <img class="w-18 h-18 " src="${player.photo}" alt="${player.name}">
+              <h6 class="text-xs font-bold text-center ">${player.name}</h6>
+            
+            </div>
+            
+            
+          
+            <div class="flex justify-around text-center gap-0.5 text-[8px] -ml-1 ">
+              <div class="flex flex-col items-center">
+                <span>PAC</span>
+                <span>${player.pace}</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span>SHO</span>
+                <span>${player.shooting}</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span>PAS</span>
+                <span>${player.passing}</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span>DRI</span>
+                <span>${player.dribbling}</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span>DEF</span>
+                <span>${player.defending}</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span>PHY</span>
+                <span>${player.physical}</span>
+              </div>
+            </div>
+            
+            </div>
+          
+            
+          `;
+
+        
+
+
+           // Clear the target div
+          targetDiv.appendChild(playerCard); // Append the new player card
+          
+
+
+         
+          playerlistContainer.classList.add("hidden"); // Hide the player list
+        } else {
+          console.error("Target div not found for index:", index);
+        }
+  
+  
+        
+  
+        
+  
+  
+  
+  
+        optionbar.addEventListener("click", (e)=> {
+  
+          selectedPlayers = selectedPlayers.filter((selected) => selected.name !== player.name);
+          e.stopPropagation();
+          playerCard.remove();
+          optionbar.remove();
+          
+  
+        })
+  
+        
+      }
+
+
+
+    });
+
+
+
+   
+
+
+  });
+
+
+}
+
+
+
+
+
+
 
 
 
@@ -521,8 +866,7 @@ playerform.addEventListener("click", (e) => {
 });
 
 
-const playerlistContainer = document.querySelector('.playerlistContainer');
-const playerlist = document.getElementById('playerlist');
+
 
 
 
